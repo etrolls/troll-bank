@@ -47,10 +47,12 @@ function App() {
   return (
     <>
       <nav className="nv navbar navbar-expand-md navbar-light fixed-top bg-light">
-        <div className="container-fluid">
-          <div className="navbar-brand" href="#">TITLE</div>
+        <div className="container-fluid ">
+          <div className="navbar-brand" href="#">TROLL BANK</div>
+          <p className="subtitle" href="#">View, Download, Upload , Store</p>
         </div>
       </nav>
+  <div className="container-fluid  emptySpace navbar-light bg-light">  &nbsp; &nbsp; &nbsp; &nbsp; </div>
       <div className="container-fluid search fixed-top bg-light">
         <div className="bar ">
           <input className="searchbar" type="text" title="Search" onChange={handleChange} />

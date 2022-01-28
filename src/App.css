@@ -4,14 +4,15 @@
 
 .nv {
   width: 100%;
-  height: 9%;
-  margin-bottom:1%
+  height: 14%;
+  margin-bottom: 5%;
+  margin-top: -1%;
 }
 
 .navbar-brand
   {
     display: block;
-    left: 46%;
+    left: 40%;
     position: absolute;
     text-align: center;
     z-index: 1030;
@@ -21,7 +22,7 @@
   }
 
 .search{
-  margin-top: 4%;  
+  margin-top: 5%;  
   z-index: 1030;
 }
 
@@ -144,5 +145,12 @@ li a:hover {
   top: 50%;
   margin-left: -48px; /*half of the width */
   margin-top: -48px; /*half of the height */
+}
+
+.subtitle{
+  margin-left: 40.5%;
+  margin-top: 5%;
+  font-family: cursive;
+  white-space: pre;
 }
 
