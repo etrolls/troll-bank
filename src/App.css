@@ -154,3 +154,41 @@ li a:hover {
   white-space: pre;
 }
 
+
+@media only screen and (max-width: 600px) {
+ 
+  .navbar-brand {
+    left: 20%;
+  }
+
+  .search {
+    margin-top: 25%;
+  }
+
+  .subtitle {
+    margin-left: 20.5%;
+    margin-top: 18%;
+  }
+
+  .bar {
+    margin: 1px auto;
+    width: 326px;
+  }
+
+  .searchbar {
+    height: 17px;
+    margin-top: 2%;
+  }
+
+  .voice{
+    height: 21px;
+    position: relative;
+    top: -10px;
+    left: 277px;
+  }
+
+.mobDown{
+  margin-top: 33%;
+}
+ 
+}

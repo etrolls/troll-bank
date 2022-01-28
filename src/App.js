@@ -66,7 +66,7 @@ function App() {
         loader={<h4>Search......</h4>}
       >
         <div className="container con bg-light">
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 ">
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mobDown">
             {
               (() => {
                 if (searchField === '' || searchField.length === 0) {
