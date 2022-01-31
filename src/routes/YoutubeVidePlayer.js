@@ -7,12 +7,12 @@ export default function YoutubeVidePlayer() {
     ReactGA.initialize('G-SMJE6TQRLV');
     const [items, setItems] = useState({});
     const [filteredItems, setFilteredItems] = useState({});
-    useEffect(() => {
+    useEffect((params) => {
         fetch('https://ap-south-1.aws.data.mongodb-api.com/app/troll-bank-web-app-phlnx/endpoint/movies?arg=' + params.videoId)
             .then(response => response.json())
             .then((data) => { setItems(data); setFilteredItems(data); })
     }, [])
-    useEffect(() => { setFilteredItems(items) });
+    useEffect(() => { setFilteredItems(items) }, [items]);
     return (<>
         <a href="/" ><center className="sticky">
             <div className="logo" >TROLL BANK</div>
@@ -26,7 +26,7 @@ export default function YoutubeVidePlayer() {
         <center>
             <h2 className="main-title fw-bold">{filteredItems.dialog}</h2>
             <p className="text-center"></p>
-            <iframe width="420" height="345" src={"https://www.youtube.com/embed/" + params.videoId + "?autoplay=1&controls=0&mute=1"} />
+            <iframe key="1" title={ params.videoId} width="420" height="345" src={"https://www.youtube.com/embed/" + params.videoId + "?autoplay=1&controls=0&mute=1"} />
         </center>
     </>);
 }
