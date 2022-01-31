@@ -54,9 +54,9 @@ function App() {
         <div className="logo" >TROLL BANK</div>
         <p>View, Download, Upload , Store</p>
         <div className="bar">
-          <img className="lens" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Google_Magnifying_Glass.svg/480px-Google_Magnifying_Glass.svg.png" title="Search by Voice" />
+          <img alt="Search" className="lens" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Google_Magnifying_Glass.svg/480px-Google_Magnifying_Glass.svg.png" title="Search by Voice" />
           <input className="searchbar" onChange={handleChange} />
-          <img className="voice" src="https://seeklogo.com/images/G/google-mic-logo-EF440C9A6F-seeklogo.com.png" title="Search by Voice" />
+          <img alt="Search by Voice" className="voice" src="https://seeklogo.com/images/G/google-mic-logo-EF440C9A6F-seeklogo.com.png" title="Search by Voice" />
         </div>
       </center>
       <div className="content">
