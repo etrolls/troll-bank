@@ -1,9 +1,10 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
+import ReactGA from 'react-ga';
 
 function App() {
-
+  ReactGA.initialize('G-SMJE6TQRLV');
   const [items, setItems] = useState([]);
   const [visbility, setVisibility] = useState(6);
   const [searchField, setSearchField] = useState("");
