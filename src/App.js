@@ -6,15 +6,12 @@ import { Rings } from 'react-loader-spinner'
 
 
 
+
 function App() {
-  ReactGA.initialize('G-SMJE6TQRLV');
-
+  ReactGA.pageview(window.location.pathname + window.location.search);
   const [items, setItems] = useState([]);
-
   const [visbility, setVisibility] = useState(15);
-
   const [searchField, setSearchField] = useState("");
-
   const [filteredItems, setFilteredItems] = useState([]);
 
   const showMoreItems = () => {

@@ -10,7 +10,11 @@ import {
 } from "react-router-dom";
 import { render } from "react-dom";
 import YoutubeVidePlayer from "./routes/YoutubeVidePlayer";
+import ReactGA from 'react-ga';
 
+
+ReactGA.initialize('G-SMJE6TQRLV');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const rootElement = document.getElementById("root");
 render(
