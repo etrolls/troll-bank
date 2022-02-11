@@ -11,17 +11,24 @@ on:
 
 
 jobs:
-  hello_world_job:
+  sitemap-generator:
     runs-on: ubuntu-latest
-    name: A job to say hello
     steps:
-      # To use this repository's private action,
-      # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
         with: 
           ref: sitemap
-      - name: Test Javascript Hello Action
-        uses: adeloyedeji/github-actions-hello@v1.0
+      - name: Install Node.js
+        uses: actions/setup-node@v1
         with:
-          who-to-greet: 'koushik'
+          node-version: 16.x
+
+      - name: Install NPM packages
+        run: npm ci
+
+      - name: Build project
+        run: |
+            node index.js
+            ls -la
+            curl -i -X PUT -H 'Authorization: token ${{ github.token }}' -d "{\"path\": \"sitemap.xml\", \"message\": \"update\", \"content\": \"$(openssl base64 -A -in sitemap.xml)\", \"branch\": \"gh-pages\",\"sha\": $(curl -X GET https://api.github.com/repos/etrolls/troll-bank/contents/sitemap.xml?ref=gh-pages | jq .sha)}" https://api.github.com/repos/etrolls/troll-bank/contents/sitemap.xml?ref=gh-pages
+        
