@@ -9,14 +9,19 @@ on:
     - cron:  '0 0 * * *'
   workflow_dispatch : 
 
+
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
         id: hello
-        uses: octocat/hello-world-javascript-action@v1.1
         with:
           who-to-greet: 'Mona the Octocat'
       # Use the output from the `hello` step
