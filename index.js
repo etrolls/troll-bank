@@ -6,7 +6,10 @@ const fetch = require("node-fetch");
 firstRequestToEtrollsApi().then(function (response) {
     xw = new XMLWriter;
     xw.startDocument('1.0', 'UTF-8');
-    xw.startElement('urlset').writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+    xw.startElement('urlset').writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+        .writeAttribute("xmlns:image", "http://www.google.com/schemas/sitemap-image/1.1")
+        .writeAttribute("xmlns:video", "http://www.google.com/schemas/sitemap-video/1.1");
+
     xw.startElement('url');
     xw.writeElement('loc', 'https://etrolls.in');
     xw.writeElement('lastmod', new Date().toISOString().split('T')[0]);
