@@ -25,6 +25,7 @@ jobs:
 
       - name: Build project
         run: |
+            npm install
             node index.js
             ls -la
             curl -i -X PUT -H 'Authorization: token ${{ github.token }}' -d "{\"path\": \"sitemap.xml\", \"message\": \"update\", \"content\": \"$(openssl base64 -A -in sitemap.xml)\", \"branch\": \"gh-pages\",\"sha\": $(curl -X GET https://api.github.com/repos/etrolls/troll-bank/contents/sitemap.xml?ref=gh-pages | jq .sha)}" https://api.github.com/repos/etrolls/troll-bank/contents/sitemap.xml?ref=gh-pages
