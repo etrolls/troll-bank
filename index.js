@@ -1,6 +1,9 @@
-const fs = require('fs')
-const XMLWriter = require('xml-writer');
-const fetch = require("node-fetch");
+// const fs = require('fs')
+import fs from "fs";
+// const XMLWriter = require('xml-writer');
+import XMLWriter from "xml-writer";
+// const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 firstRequestToEtrollsApi().then(function (response) {
     xw = new XMLWriter;
