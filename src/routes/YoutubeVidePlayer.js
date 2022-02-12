@@ -3,16 +3,17 @@ import { useParams } from "react-router-dom"
 import ReactGA from 'react-ga';
 
 export default function YoutubeVidePlayer() {
-    const params = useParams();
+    localStorage.setItem('yId', useParams().videoId); 
     ReactGA.initialize('G-SMJE6TQRLV');
     const [items, setItems] = useState({});
     const [filteredItems, setFilteredItems] = useState({});
     useEffect((params) => {
-        fetch('https://ap-south-1.aws.data.mongodb-api.com/app/troll-bank-web-app-phlnx/endpoint/movies?arg=' + params.videoId)
+        fetch('https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=' + localStorage.getItem('yId'))
             .then(response => response.json())
             .then((data) => { setItems(data); setFilteredItems(data); })
     }, [])
     useEffect(() => { setFilteredItems(items) }, [items]);
+    console.log(filteredItems); 
     return (<>
         <a href="/" ><center className="sticky">
             <div className="logo" >TROLL BANK</div>
@@ -24,9 +25,9 @@ export default function YoutubeVidePlayer() {
             </div>
         </center></a>
         <center>
-            <h2 className="main-title fw-bold">{filteredItems.dialog}</h2>
+            <h2 className="main-title fw-bold">{filteredItems.title}</h2>
             <p className="text-center"></p>
-            <iframe key="1" title={ params.videoId} width="420" height="345" src={"https://www.youtube.com/embed/" + params.videoId + "?autoplay=1&controls=0&mute=1"} />
+            <iframe key="1" title={localStorage.getItem('yId')} width="420" height="345" src={"https://www.youtube.com/embed/" + localStorage.getItem('yId') + "?autoplay=1&controls=0&mute=1"} />
         </center>
     </>);
 }
