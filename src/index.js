@@ -21,7 +21,7 @@ render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="/onetroll/yt/:videoId" element={<YoutubeVidePlayer />} />
+      <Route path="/one/ytroll/:videoId" element={<YoutubeVidePlayer />} />
     </Routes>
   </BrowserRouter>,
   rootElement
