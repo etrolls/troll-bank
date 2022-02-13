@@ -2,13 +2,7 @@ import React from 'react';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom";
 import { render } from "react-dom";
-import YoutubeVidePlayer from "./routes/YoutubeVidePlayer";
 import ReactGA from 'react-ga';
 
 
@@ -17,12 +11,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 
 const rootElement = document.getElementById("root");
 render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/one/ytroll/:videoId" element={<YoutubeVidePlayer />} />
-    </Routes>
-  </BrowserRouter>,
+  <App />,
   rootElement
 );
 
