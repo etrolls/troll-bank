@@ -42,7 +42,7 @@ firstRequestToEtrollsApi().then(async function (result) {
     for (let _i in response) {
         let { videoId, tags, dialog, link } = response[_i]
         xw.startElement('url')
-            .writeElement('loc', "https://etrolls.in/onetroll/yt/" + videoId)
+            .writeElement('loc', "https://one.etrolls.in/#/" + videoId)
             .writeElement('lastmod', new Date().toISOString().split('T')[0])
             .writeElement('changefreq', 'daily')
             .writeElement('priority', '0.1');
