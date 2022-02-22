@@ -1,38 +1,71 @@
-.App {
-  text-align: center;
+img {
+  width: 100%; display: block;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.videoContainer {
+  position: relative;
+}
+.playBtn {
+  position: absolute;
+  width: 75px;
+  height: 80px;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.index{
+  z-index: 1000;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.img-fluid {
+  max-width: 15vw;
+  height: auto;
 }
 
-.App-link {
-  color: #61dafb;
+.title{
+  font-weight: 900;
+  font-size: 3vw;
+  margin-left: -8vw;
+  vertical-align:middle;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.channelName{
+  margin-left: 8vw;
+  margin-bottom: -2vw;
+  z-index: 9999;
+  font-weight: 900;
+  transform: translate(-50%, -50%);
 }
+
+.adjustingvm{
+  margin-top: -7vw;
+  margin-left: -16vw;
+}
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+  
+ }
+
+/* Medium devices (tablets, 768px and up)  */
+@media (min-width: 768px) { 
+  
+ }
+
+/*  Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  
+ }
+
+/*  X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+ 
+ }
+
+/*  XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) { 
+ 
+ }
