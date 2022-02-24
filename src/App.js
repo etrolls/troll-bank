@@ -11,8 +11,8 @@ import { Rings } from 'react-loader-spinner';
 import CardGroup from 'react-bootstrap/CardGroup';
 import YouTubeSubscribe from "./youtubeSubscribe";
 import MiniSearch from 'minisearch';
-
-
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import Fuse from 'fuse.js';
 
 var onetroll = "";
 
@@ -39,7 +39,7 @@ function App() {
     fields: ['dialog', 'tags'], // fields to index for full-text search
     storeFields: ['videoId', 'dialog', 'tags'], // fields to return with search results
     searchOptions: {
-      fuzzy: 0.2
+      fuzzy: 0.5
     }
   })
 
@@ -60,11 +60,10 @@ function App() {
         if (searchField.toLowerCase() === "") {
           return record;
         } else {
-          return record;
-          // return (
-          //   record.tags.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r)) ||
-          //   record.dialog.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r))
-          // );
+          return (
+            record.tags.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r)) ||
+            record.dialog.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r))
+          );
         }
       }
 
@@ -73,13 +72,62 @@ function App() {
 
   /** miniSearch Get Search Result & AutoSuggest result */
   let results = miniSearch.search(searchField);
-  //   console.log(results);
-  miniSearch.autoSuggest(searchField, {
-    filter: (result) => console.log("sug:", result)
+  // console.log(results);
+
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState([]);
+  const filterBy = () => true;
+
+
+  const fuse = new Fuse(items, {
+    keys: ['dialog', 'tags']
   })
+
+  const handleSearch = (query) => {
+    setIsLoading(true);
+    const data = fuse.search(query).map((i) => ({
+      dialog: i.item.dialog,
+      id: i.item.id,
+      tags: i.item.tags,
+      videoId: i.item.videoId
+    }));
+    setSearchField(query);
+    setOptions(data);
+    setIsLoading(false);
+  };
+
+ const handleInputChange = (input, e) => {
+    console.log("value", input);
+  }
 
   return (
     <>
+      <AsyncTypeahead
+        filterBy={filterBy}
+        id="async-example"
+        isLoading={isLoading}
+        labelKey="dialog"
+        minLength={2}
+        onInputChange={handleInputChange}
+        onSearch={handleSearch}
+        options={options}
+        placeholder="Search for your favorite item........."
+        renderMenuItemChildren={(option) => (
+          <>
+            <img
+              alt={option.dialog}
+              src={"https://i.ytimg.com/vi/" + option.videoId + "/hqdefault.jpg"}
+              style={{
+                height: '24px',
+                marginRight: '10px',
+                width: '24px',
+              }}
+            />
+            <span>{option.dialog}</span>
+          </>
+        )}
+      />
       <Container className="p-3">
         <h1 className="text-center fontweight">TROLL BANK</h1>
         <h6 className="text-center subTitle">View, Download, Upload , Store</h6>
