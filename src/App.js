@@ -10,7 +10,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Rings } from 'react-loader-spinner';
 import CardGroup from 'react-bootstrap/CardGroup';
 import YouTubeSubscribe from "./youtubeSubscribe";
-import MiniSearch from 'minisearch';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import Fuse from 'fuse.js';
 
@@ -31,48 +30,12 @@ function App() {
     setVisibility((preValue) => preValue + 15);
   };
 
-  /** users searchinput will be stored in the state const   */
-  const [searchField, setSearchField] = useState("");
-
-  /** Initailizing the minisearch with options */
-  let miniSearch = new MiniSearch({
-    fields: ['dialog', 'tags'], // fields to index for full-text search
-    storeFields: ['videoId', 'dialog', 'tags'], // fields to return with search results
-    searchOptions: {
-      fuzzy: 0.5
-    }
-  })
-
-  /** Feeding all records to minisearch  */
-  miniSearch.addAll(items)
-
   /** API to fetch all records from our DB  */
   useEffect(() => {
     fetch('https://api.etrolls.in/youtube/data/allRecords.json')
       .then(response => response.json())
       .then((data) => { setItems(data); setFilteredItems(data); })
   }, [])
-
-  /** Setting filtered from items*/
-  useEffect(() => {
-    setFilteredItems(items.filter(
-      record => {
-        if (searchField.toLowerCase() === "") {
-          return record;
-        } else {
-          return (
-            record.tags.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r)) ||
-            record.dialog.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r))
-          );
-        }
-      }
-
-    ));
-  }, [searchField, items]);
-
-  /** miniSearch Get Search Result & AutoSuggest result */
-  let results = miniSearch.search(searchField);
-  // console.log(results);
 
 
   const [isLoading, setIsLoading] = useState(false);
@@ -92,13 +55,16 @@ function App() {
       tags: i.item.tags,
       videoId: i.item.videoId
     }));
-    setSearchField(query);
     setOptions(data);
     setIsLoading(false);
   };
 
- const handleInputChange = (input, e) => {
-    console.log("value", input);
+  const handleInputChange = (input, e) => {
+    setFilteredItems(items);
+  }
+
+  const handleChange = (selectedOptions) => {
+    setFilteredItems(selectedOptions);
   }
 
   return (
@@ -109,9 +75,10 @@ function App() {
         isLoading={isLoading}
         labelKey="dialog"
         minLength={2}
-        onInputChange={handleInputChange}
         onSearch={handleSearch}
         options={options}
+        onInputChange={handleInputChange}
+        onChange={handleChange}
         placeholder="Search for your favorite item........."
         renderMenuItemChildren={(option) => (
           <>
@@ -215,7 +182,7 @@ function MyVerticallyCenteredModal(props) {
   async function closeWindow(url) {
     props.onHide();
     window.open(url,
-      "mywindow", "width=150,height=150");
+      "mywindow", "width=150,height=150")/;
   }
   return (
     <Modal
@@ -235,7 +202,7 @@ function MyVerticallyCenteredModal(props) {
           <Row>
             <Col xs={7} sm={7} md={7} lg={7} className="p-3" >
               <div className="embed-responsive embed-responsive-16by9 ">
-                <iframe className="embed-responsive-item" frameBorder="1" src={"https://www.youtube.com/embed/" + onetroll.videoId + "?autoplay=1"} ></iframe>
+                <iframe title={onetroll.videoId} className="embed-responsive-item" frameBorder="1" src={"https://www.youtube.com/embed/" + onetroll.videoId + "?autoplay=1"} ></iframe>
               </div>
             </Col>
             <Col xs={5} sm={5} md={5} lg={5} className="p-1" >
@@ -343,7 +310,7 @@ function MyVerticallyCenteredModal(props) {
 
           <center>
             <div className="embed-responsive embed-responsive-16by9 ">
-              <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/" + onetroll.videoId + "?autoplay=1"} ></iframe>
+              <iframe title={onetroll.videoId} className="embed-responsive-item" src={"https://www.youtube.com/embed/" + onetroll.videoId + "?autoplay=1"} ></iframe>
             </div>
           </center>
         </Container>
