@@ -255,7 +255,7 @@ function MyVerticallyCenteredModal(props) {
             <Col xs={5} sm={5} md={5} lg={5} className="p-1" >
               <Row xs={12} sm={12} md={12} lg={12} className="p-2">
                 <YouTubeSubscribe
-                  channelid={window.localStorage.getItem('youtube-user-id')}
+                  channelid={onetroll.yId}
                   theme={"default"}
                   layout={"full"}
                   count={"default"}
