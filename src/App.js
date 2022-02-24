@@ -12,6 +12,8 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import YouTubeSubscribe from "./youtubeSubscribe";
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import Fuse from 'fuse.js';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 var onetroll = "";
 
@@ -30,6 +32,15 @@ function App() {
     setVisibility((preValue) => preValue + 15);
   };
 
+  /** state that store boolean value for Loading spinner which activite before computing the fuse result from items   */
+  const [isLoading, setIsLoading] = useState(false);
+
+  /** options are auto suggestion result in the search dropdown, All these values are stored in the state */
+  const [options, setOptions] = useState([]);
+
+  /**filter by is a boolean to allow AsyncTypeahead to activiate filter capability  */
+  const filterBy = () => true;
+
   /** API to fetch all records from our DB  */
   useEffect(() => {
     fetch('https://api.etrolls.in/youtube/data/allRecords.json')
@@ -37,16 +48,12 @@ function App() {
       .then((data) => { setItems(data); setFilteredItems(data); })
   }, [])
 
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [options, setOptions] = useState([]);
-  const filterBy = () => true;
-
-
+  /**It performs something the same as full-text search against data to see likely misspellings and approximate string matching.  */
   const fuse = new Fuse(items, {
     keys: ['dialog', 'tags']
   })
 
+  /** const handler  to feed the auto suggestion data  */
   const handleSearch = (query) => {
     setIsLoading(true);
     const data = fuse.search(query).map((i) => ({
@@ -59,50 +66,62 @@ function App() {
     setIsLoading(false);
   };
 
+  /** const handler to retain filtered result in same state until the final selection is done from the autosuggestions   */
   const handleInputChange = (input, e) => {
     setFilteredItems(items);
   }
 
+  /** const handler to feed the auto suggestion data in to the filtered results */
   const handleChange = (selectedOptions) => {
-    setFilteredItems(selectedOptions);
+    if (Object.keys(selectedOptions).length !== 0) {
+      setFilteredItems(selectedOptions);
+    } else {
+      setFilteredItems(items);
+    }
+
   }
 
   return (
     <>
-      <AsyncTypeahead
-        filterBy={filterBy}
-        id="async-example"
-        isLoading={isLoading}
-        labelKey="dialog"
-        minLength={2}
-        onSearch={handleSearch}
-        options={options}
-        onInputChange={handleInputChange}
-        onChange={handleChange}
-        placeholder="Search for your favorite item........."
-        renderMenuItemChildren={(option) => (
-          <>
-            <img
-              alt={option.dialog}
-              src={"https://i.ytimg.com/vi/" + option.videoId + "/hqdefault.jpg"}
-              style={{
-                height: '24px',
-                marginRight: '10px',
-                width: '24px',
-              }}
-            />
-            <span>{option.dialog}</span>
-          </>
-        )}
-      />
       <Container className="p-3">
         <h1 className="text-center fontweight">TROLL BANK</h1>
         <h6 className="text-center subTitle">View, Download, Upload , Store</h6>
         <Row>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <div className="mx-auto">
-
-            </div>
+            <center>
+              <div className="mx-auto">
+                <AsyncTypeahead
+                  filterBy={filterBy}
+                  id="async-example"
+                  isLoading={isLoading}
+                  labelKey="dialog"
+                  minLength={2}
+                  onSearch={handleSearch}
+                  options={options}
+                  onInputChange={handleInputChange}
+                  onChange={handleChange}
+                  placeholder=" 🔍 Search for your favorite item........."
+                  renderMenuItemChildren={(option) => (
+                    <>
+                      <Row>
+                        <Col>
+                          <img
+                            alt={option.dialog}
+                            src={"https://i.ytimg.com/vi/" + option.videoId + "/hqdefault.jpg"}
+                            style={{
+                              height: '24px',
+                              marginRight: '10px',
+                              width: '24px',
+                            }}
+                          />
+                        </Col>
+                        <Col>{option.dialog}</Col>
+                      </Row>
+                    </>
+                  )}
+                />
+              </div>
+            </center>
           </Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} >
             <InfiniteScroll
@@ -119,41 +138,54 @@ function App() {
             >
               <Container>
                 <CardGroup>
-                  <Row>
-                    {filteredItems.map((i, idx) => (
-                      <Col key={(Math.random() + 1).toString(36).substring(7) + "-" + idx} id={(Math.random() + 1).toString(36).substring(7) + "-" + idx} xs={12} sm={12} md={4} lg={3} className="p-3">
-                        <Card className="d-flex align-items-stretch" key={"card-" + idx} id={"card-" + idx}>
-                          <a href="/#" onClick={() => {
+                  {/* <Row> */}
+                  {filteredItems.map((i, idx) => (
+                    <Col key={(Math.random() + 1).toString(36).substring(7) + "-" + idx} id={(Math.random() + 1).toString(36).substring(7) + "-" + idx} xs={12} sm={12} md={4} lg={3} className="p-3">
+                      <Card className="d-flex align-items-stretch" key={"card-" + idx} id={"card-" + idx}>
+                        <a href="/#" onClick={() => {
+                          onetroll = i;
+                          setModalShow(true);
+                        }} key={"anchor-" + idx} id={"anchor-" + idx} className="stretched-link">
+                          <div className="videoContainer">
+                            <img id={"playbutton-" + idx} key={"playbutton-" + idx} src="/img/YouTube_play_button_icon.svg" alt="play" className="playBtn" />
+                            <Card.Img id={"cardImg-" + idx} key={"cardImg-" + idx} variant="top" src={"https://i.ytimg.com/vi/" + i.videoId + "/hqdefault.jpg"} />
+                          </div>
+                        </a>
+
+                        <Card.Body key={"cardbody-" + idx} id={"cardbody-" + idx} >
+                          <center>
+                            <OverlayTrigger
+                              key={"top"}
+                              placement={"top"}
+                              overlay={
+                                <Tooltip id={`tooltip-right`}>
+                                  {i.dialog}
+                                </Tooltip>
+                              }
+                            >
+                              <Card.Title key={"cardTitle-" + idx} id={"cardTitle-" + idx} >{i.dialog}</Card.Title>
+                            </OverlayTrigger>
+                          </center>
+                          <center>
+                            {i.tags.split(" ").map((t, idx) => (
+                              <Card.Text key={"#tags-" + idx} id={"#tags-" + idx} className="w3-tag m-1">{"#" + t}</Card.Text>
+                            ))}
+                          </center>
+                        </Card.Body>
+
+
+                        <>
+                          <Button key={"contentDwnBtn-" + idx} id={"contentDwnBtn-" + idx} variant="primary" onClick={() => {
                             onetroll = i;
                             setModalShow(true);
-                          }} key={"anchor-" + idx} id={"anchor-" + idx} className="stretched-link">
-                            <div className="videoContainer">
-                              <img id={"playbutton-" + idx} key={"playbutton-" + idx} src="/img/YouTube_play_button_icon.svg" alt="play" className="playBtn" />
-                              <Card.Img id={"cardImg-" + idx} key={"cardImg-" + idx} variant="top" src={"https://i.ytimg.com/vi/" + i.videoId + "/hqdefault.jpg"} />
-                            </div>
-                          </a>
-                          <Card.Body key={"cardbody-" + idx} id={"cardbody-" + idx} >
-                            <center>
-                              <Card.Title key={"cardTitle-" + idx} id={"cardTitle-" + idx} >{i.dialog}</Card.Title>
-                            </center>
-                            <center>
-                              {i.tags.split(" ").map((t, idx) => (
-                                <Card.Text key={"#tags-" + idx} id={"#tags-" + idx} className="w3-tag m-1">{t}</Card.Text>
-                              ))}
-                            </center>
-                          </Card.Body>
-                          <>
-                            <Button key={"contentDwnBtn-" + idx} id={"contentDwnBtn-" + idx} variant="primary" onClick={() => {
-                              onetroll = i;
-                              setModalShow(true);
-                            }}>
-                              Download Audio/ Video File
-                            </Button>
-                          </>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
+                          }}>
+                            Download Audio/ Video File
+                          </Button>
+                        </>
+                      </Card>
+                    </Col>
+                  ))}
+                  {/* </Row> */}
                 </CardGroup>
               </Container>
             </InfiniteScroll>
@@ -176,13 +208,12 @@ function MyVerticallyCenteredModal(props) {
       .then(response => response.json())
       .then((data) => {
         window.localStorage.setItem('youtube-user-id', data.items[0].snippet.channelId);
-        window.localStorage.setItem('youtube-channel-name', data.items[0].snippet.channelTitle);
       });
   }
   async function closeWindow(url) {
     props.onHide();
     window.open(url,
-      "mywindow", "width=150,height=150")/;
+      "mywindow", "width=150,height=150");
   }
   return (
     <Modal

@@ -78,3 +78,30 @@ img {
 @media (min-width: 1400px) { 
  
  }
+
+ .card-title{
+  display: inline-block;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+ }
+
+ 
+
+.form-control {
+  border-radius:30px;
+  border:1px solid darkblue;
+  margin:0 auto;
+  width: 70vw;
+
+}
+
+.w3-tag {
+  font-size: x-small;
+}
+
+
+.fw500{
+  font-weight: 500;
+}
