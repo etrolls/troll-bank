@@ -14,13 +14,17 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import Fuse from 'fuse.js';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { Upload } from 'react-bootstrap-icons';
+
 
 var onetroll = "";
 
 function App() {
 
   /** Bootstrap popup boolean state const */
-  const [modalShow, setModalShow] = useState(false);
+  const [videoShowModel, setVideoShowModel] = useState(false);
+  const [AddVideoModel, setAddVideoModel] = useState(false);
+
 
   /** items is the main one to store the api result & filttereed items will read data from items and store the state const */
   const [items, setItems] = useState([]);
@@ -82,7 +86,17 @@ function App() {
   }
 
   return (
-    <>
+    <Container fluid>
+      <a href="/#" onClick={() => {
+        setAddVideoModel(true);
+      }} key={"AddVideoPopup"} id={"AddVideoPopup"}>
+        <div class="icon-bar button-container">
+          <div class="glass-btn red-btn ">
+            <img src="https://i.postimg.cc/LstJ4Hhf/youtube.png" alt="youtube" />
+          </div>
+        </div>
+        <div class="icon-bar bottom-left">ADD VIDEO</div>
+      </a>
       <Container className="p-3">
         <h1 className="text-center fontweight">TROLL BANK</h1>
         <h6 className="text-center subTitle">View, Download, Upload , Store</h6>
@@ -138,13 +152,12 @@ function App() {
             >
               <Container>
                 <CardGroup>
-                  {/* <Row> */}
                   {filteredItems.map((i, idx) => (
                     <Col key={(Math.random() + 1).toString(36).substring(7) + "-" + idx} id={(Math.random() + 1).toString(36).substring(7) + "-" + idx} xs={12} sm={12} md={4} lg={3} className="p-3">
                       <Card className="d-flex align-items-stretch" key={"card-" + idx} id={"card-" + idx}>
                         <a href="/#" onClick={() => {
                           onetroll = i;
-                          setModalShow(true);
+                          setVideoShowModel(true);
                         }} key={"anchor-" + idx} id={"anchor-" + idx} className="stretched-link">
                           <div className="videoContainer">
                             <img id={"playbutton-" + idx} key={"playbutton-" + idx} src="/img/YouTube_play_button_icon.svg" alt="play" className="playBtn" />
@@ -177,7 +190,7 @@ function App() {
                         <>
                           <Button key={"contentDwnBtn-" + idx} id={"contentDwnBtn-" + idx} variant="primary" onClick={() => {
                             onetroll = i;
-                            setModalShow(true);
+                            setVideoShowModel(true);
                           }}>
                             Download Audio/ Video File
                           </Button>
@@ -185,7 +198,6 @@ function App() {
                       </Card>
                     </Col>
                   ))}
-                  {/* </Row> */}
                 </CardGroup>
               </Container>
             </InfiniteScroll>
@@ -193,10 +205,14 @@ function App() {
         </Row>
       </Container>
       <MyVerticallyCenteredModal
-        show={modalShow}
-        onHide={() => { setModalShow(false); }}
+        show={videoShowModel}
+        onHide={() => { setVideoShowModel(false); }}
       />
-    </>
+      <AddVideoModal
+        show={AddVideoModel}
+        onHide={() => { setAddVideoModel(false); }}
+      />
+    </Container>
   );
 }
 
@@ -350,4 +366,40 @@ function MyVerticallyCenteredModal(props) {
     </Modal>
   );
 }
+
+
+function AddVideoModal(props) {
+  const [response, setResponse] = useState("");
+
+  function createdRecordAndSetResponseHeader() {
+    setResponse("video uploaded successfully");
+    setTimeout(() => { setResponse(""); props.onHide(); }, 2000);
+
+  }
+
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add Video  &nbsp; <Upload /> &nbsp;
+          <span className="alert font-weight-success">{response}</span>
+        </Modal.Title>
+
+      </Modal.Header>
+      <Modal.Body>
+        <Button onClick={() => { createdRecordAndSetResponseHeader() }} >Download & Close Popup</Button>
+        <div className="spinner-border text-dark" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </Modal.Body>
+
+    </Modal>
+  );
+}
+
 export default App;
