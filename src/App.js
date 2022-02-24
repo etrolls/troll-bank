@@ -220,7 +220,7 @@ function MyVerticallyCenteredModal(props) {
   const [format, setFormat] = useState("mp4");
   const [quality, setQuality] = useState("highest");
   if (Object.keys(onetroll).length !== 0) {
-    fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + onetroll.videoId + '&key=' + process.env.REACT_APP_YOUTUBE_API_KEY)
+    fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + onetroll.videoId + '&key=AIzaSyCMKZg_lE9H_FhaOicxoDLaTir7zaVYE3w')
       .then(response => response.json())
       .then((data) => {
         window.localStorage.setItem('youtube-user-id', data.items[0].snippet.channelId);
