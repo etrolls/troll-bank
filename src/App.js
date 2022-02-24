@@ -10,72 +10,86 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Rings } from 'react-loader-spinner';
 import CardGroup from 'react-bootstrap/CardGroup';
 import YouTubeSubscribe from "./youtubeSubscribe";
+import MiniSearch from 'minisearch';
+
 
 
 var onetroll = "";
 
 function App() {
+
+  /** Bootstrap popup boolean state const */
   const [modalShow, setModalShow] = useState(false);
+
+  /** items is the main one to store the api result & filttereed items will read data from items and store the state const */
   const [items, setItems] = useState([]);
-  const [visbility, setVisibility] = useState(15);
-  const [searchField, setSearchField] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
 
+  /**  No of videos to be displayed on the screen is controlled by state const and showMoreItems will handle user scroll  and populate more results  */
+  const [visbility, setVisibility] = useState(15);
   const showMoreItems = () => {
     setVisibility((preValue) => preValue + 15);
   };
 
+  /** users searchinput will be stored in the state const   */
+  const [searchField, setSearchField] = useState("");
+
+  /** Initailizing the minisearch with options */
+  let miniSearch = new MiniSearch({
+    fields: ['dialog', 'tags'], // fields to index for full-text search
+    storeFields: ['videoId', 'dialog', 'tags'], // fields to return with search results
+    searchOptions: {
+      fuzzy: 0.2
+    }
+  })
+
+  /** Feeding all records to minisearch  */
+  miniSearch.addAll(items)
+
+  /** API to fetch all records from our DB  */
   useEffect(() => {
-    fetch('https://api.etrolls.in/youtube/data/1.json')
+    fetch('https://api.etrolls.in/youtube/data/allRecords.json')
       .then(response => response.json())
       .then((data) => { setItems(data); setFilteredItems(data); })
   }, [])
 
+  /** Setting filtered from items*/
   useEffect(() => {
     setFilteredItems(items.filter(
       record => {
         if (searchField.toLowerCase() === "") {
           return record;
         } else {
-          return (
-            record.tags.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r)) ||
-            record.dialog.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r))
-          );
+          return record;
+          // return (
+          //   record.tags.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r)) ||
+          //   record.dialog.toLowerCase().split(" ").some(r => searchField.toLowerCase().split(" ").includes(r))
+          // );
         }
       }
 
     ));
   }, [searchField, items]);
 
-  (function () {
-    var cx = '843f7adc740834ca9';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
-
-  useEffect(() => {
-
-  }, []);
-
-  window.onload = function () {
-    document.getElementById('gsc-i-id1').placeholder = 'SEARCH FOR FAVOURITE TROLL';
-  };
+  /** miniSearch Get Search Result & AutoSuggest result */
+  let results = miniSearch.search(searchField);
+  //   console.log(results);
+  miniSearch.autoSuggest(searchField, {
+    filter: (result) => console.log("sug:", result)
+  })
 
   return (
     <>
       <Container className="p-3">
+        <h1 className="text-center fontweight">TROLL BANK</h1>
+        <h6 className="text-center subTitle">View, Download, Upload , Store</h6>
         <Row>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <div className="mx-auto">
-              <div data-text="Enter text here" className="gcse-search" ></div>
+
             </div>
           </Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} >
-
             <InfiniteScroll
               dataLength={visbility}
               next={showMoreItems}
@@ -108,7 +122,7 @@ function App() {
                               <Card.Title key={"cardTitle-" + idx} id={"cardTitle-" + idx} >{i.dialog}</Card.Title>
                             </center>
                             <center>
-                              {i.tags.map((t, idx) => (
+                              {i.tags.split(" ").map((t, idx) => (
                                 <Card.Text key={"#tags-" + idx} id={"#tags-" + idx} className="w3-tag m-1">{t}</Card.Text>
                               ))}
                             </center>
@@ -142,13 +156,19 @@ function App() {
 function MyVerticallyCenteredModal(props) {
   const [format, setFormat] = useState("mp4");
   const [quality, setQuality] = useState("highest");
-console.log("process.env.REACT_APP_YOUTUBE_API_KEY",process.env.REACT_APP_YOUTUBE_API_KEY);
-  fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + onetroll.videoId + '&key=' + process.env.REACT_APP_YOUTUBE_API_KEY)
-    .then(response => response.json())
-    .then((data) => {
-      window.localStorage.setItem('youtube-user-id', data.items[0].snippet.channelId);
-      window.localStorage.setItem('youtube-channel-name', data.items[0].snippet.channelTitle);
-    });
+  if (Object.keys(onetroll).length !== 0) {
+    fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + onetroll.videoId + '&key=' + process.env.REACT_APP_YOUTUBE_API_KEY)
+      .then(response => response.json())
+      .then((data) => {
+        window.localStorage.setItem('youtube-user-id', data.items[0].snippet.channelId);
+        window.localStorage.setItem('youtube-channel-name', data.items[0].snippet.channelTitle);
+      });
+  }
+  async function closeWindow(url) {
+    props.onHide();
+    window.open(url,
+      "mywindow", "width=150,height=150");
+  }
   return (
     <Modal
       {...props}
@@ -217,7 +237,7 @@ console.log("process.env.REACT_APP_YOUTUBE_API_KEY",process.env.REACT_APP_YOUTUB
                 </select>
               </Row>
               <Row xs={12} sm={12} md={12} lg={12} className="p-3">
-                <Button onClick={() => { window.open("https://zvemy.sse.codesandbox.io/download?URL=https://www.youtube.com/watch?v=" + onetroll.videoId + "&format=" + format + "&quality=" + quality, "_blank", 'newwindow') }} >Download & Close Popup</Button>
+                <Button onClick={() => { closeWindow("https://zvemy.sse.codesandbox.io/download?URL=https://www.youtube.com/watch?v=" + onetroll.videoId + "&format=" + format + "&quality=" + quality, "_blank", 'newwindow') }} >Download & Close Popup</Button>
               </Row>
             </Col>
           </Row>
@@ -272,16 +292,15 @@ console.log("process.env.REACT_APP_YOUTUBE_API_KEY",process.env.REACT_APP_YOUTUB
               />
             </Col>
           </Row>
-          <Row xs={12} sm={12} className="p-1" >
-            <center>
-              <div className="embed-responsive embed-responsive-16by9 ">
-                <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/" + onetroll.videoId + "?autoplay=1"} ></iframe>
-              </div>
-            </center>
-          </Row>
+
+          <center>
+            <div className="embed-responsive embed-responsive-16by9 ">
+              <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/" + onetroll.videoId + "?autoplay=1"} ></iframe>
+            </div>
+          </center>
         </Container>
       </Modal.Body>
-      <Button className="d-sm-block d-xs-block d-lg-none d-md-none d-xl-none" onClick={() => { window.open("https://zvemy.sse.codesandbox.io/download?URL=https://www.youtube.com/watch?v=" + onetroll.videoId + "&format=" + format + "&quality=" + quality, "_blank") }} >Download & Close Popup</Button>
+      <Button className="d-sm-block d-xs-block d-lg-none d-md-none d-xl-none" onClick={() => { closeWindow("https://zvemy.sse.codesandbox.io/download?URL=https://www.youtube.com/watch?v=" + onetroll.videoId + "&format=" + format + "&quality=" + quality, "_blank") }} >Download & Close Popup</Button>
     </Modal>
   );
 }

@@ -41,8 +41,17 @@ img {
 
 .adjustingvm{
   margin-top: -7vw;
-  margin-left: -16vw;
+  margin-left: -15vw;
 }
+
+.fontweight{
+  font-weight: 1000;
+}
+
+.subTitle{
+  margin-top: -1%;
+}
+
 
 
 /* Small devices (landscape phones, 576px and up) */
