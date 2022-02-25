@@ -96,7 +96,7 @@ function App() {
               <img src="https://i.postimg.cc/LstJ4Hhf/youtube.png" alt="youtube" />
             </div>
           </div>
-          <div className="addVideo1  bottom-left">&nbsp; &nbsp; &nbsp;  ADD</div>
+          <div className="addVideo1  bottom-left">&nbsp; &nbsp; &nbsp; ADD</div>
           <div className="addVideo2 bottom-left">YOUR VIDEO</div>
         </a>
       </div>
@@ -348,7 +348,7 @@ function MyVerticallyCenteredModal(props) {
               </Col>
               <Col xs={4} sm={4} className="text-start adjustingvm" >
                 <YouTubeSubscribe
-                  channelid={window.localStorage.getItem('youtube-user-id')}
+                  channelid={onetroll.yId}
                   theme={"default"}
                   layout={"full"}
                   count={"default"}
