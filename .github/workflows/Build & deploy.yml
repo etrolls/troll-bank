@@ -17,14 +17,13 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 17.x
-    
-    - name: Install NPM packages
-      run: npm ci
-    
+        node-version: 17
+        
     - name: Build project
       run: |
-          npm run build
+          npm install yarn
+          yarn install
+          yarn run build
           echo 'etrolls.in' > build/CNAME
     
     - name: Upload production-ready build files
