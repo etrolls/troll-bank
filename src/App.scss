@@ -1,0 +1,113 @@
+.card{
+  box-shadow: 0 10px 10px rgb(0 0 0 / 50%);
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+.videoContainer {
+  position: relative;
+}
+
+.playBtn {
+  position: absolute;
+  width: 75px;
+  height: 80px;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}
+
+.index {
+  z-index: 1000;
+}
+
+.img-fluid {
+  max-width: 15vw;
+  height: auto;
+}
+
+.title {
+  font-weight: 900;
+  font-size: 3vw;
+  margin-left: -8vw;
+  vertical-align: middle;
+}
+
+.channelName {
+  margin-left: 8vw;
+  margin-bottom: -2vw;
+  z-index: 9999;
+  font-weight: 900;
+  transform: translate(-50%, -50%);
+}
+
+.adjustingvm {
+  margin-top: -7vw;
+  margin-left: -15vw;
+}
+
+.fontweight {
+  font-weight: 1000;
+}
+
+.subTitle {
+  margin-top: -1%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up)  */
+@media (min-width: 768px) {
+}
+
+/*  Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/*  X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}
+
+/*  XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+}
+
+.card-title {
+  display: inline-block;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+#divContainer .form-control {
+  border-radius: 30px;
+  border: 1px solid darkblue;
+  margin: 0 auto;
+  width: 70vw;
+}
+
+.w3-tag {
+  font-size: x-small;
+}
+
+.mAnimatedButton {
+  position:absolute;
+  overflow:hidden;
+  height: 40px;
+  bottom: 0;
+  z-index: 1;
+}
+
+
+
+
+
+
+
