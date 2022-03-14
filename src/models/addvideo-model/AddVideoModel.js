@@ -3,17 +3,16 @@ import { Modal } from 'react-bootstrap';
 import React from 'react';
 import { Upload } from 'react-bootstrap-icons';
 import useForm from './useForm';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 
 export default function AddVideoModel(props) {
 
     const [response, setResponse] = React.useState("");
 
     const formLogin = () => {
-
+        handleChange(); 
         console.log("Callback function when form is submitted!");
         console.log("Form Values ", values);
+        createdRecordAndSetResponseHeader(); 
     }
 
     
