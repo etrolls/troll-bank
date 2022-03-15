@@ -20,7 +20,10 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-loader-spinner": "^5.1.4",
     "react-scripts": "5.0.0",
-    "scss": "^0.2.4"
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0",
+    "scss": "^0.2.4",
+    "webpack": "^5.70.0"
   },
   "scripts": {
     "start": "react-scripts start",
